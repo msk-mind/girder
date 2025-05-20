@@ -37,7 +37,7 @@ class FileHandle:
         self._pos = None
         # If a read is requested that is longer than the specified size, raise
         # an exception.  This prevents unbounded memory use.
-        self._maximumReadSize = 16 * 1024 * 1024
+        self._maximumReadSize = Setting().get(SettingKey.FILEHANDLE_MAX_SIZE)
 
         self.seek(0)
 
@@ -65,6 +65,8 @@ class FileHandle:
             raise GirderException('Read exceeds maximum allowed size.')
         data = io.BytesIO()
         length = 0
+        if self._stream is None:
+            self._stream = self._adapter.downloadFile(self._file, offset=self._pos, headers=False)()
         for chunk in itertools.chain(self._prev, self._stream):
             chunkLen = len(chunk)
 
@@ -103,7 +105,7 @@ class FileHandle:
 
         if self._pos != oldPos:
             self._prev = []
-            self._stream = self._adapter.downloadFile(self._file, offset=self._pos, headers=False)()
+            self._stream = None
 
     def close(self):
         pass
@@ -201,6 +203,16 @@ class AbstractAssetstoreAdapter:
         implement this to provide the actual next byte required.
         """
         return upload['received']
+
+    def getFileSize(self, file):
+        """
+        Get the file size (computing it, if necessary). Default behavior simply
+        returns `file.get('size', 0)`. This method exists because some
+        assetstores do not compute the file size immediately, but only when
+        it is actually needed. The assetstore may also need to update the file
+        size after some changes.
+        """
+        return file.get('size', 0)
 
     def deleteFile(self, file):
         """
@@ -444,3 +456,16 @@ class AbstractAssetstoreAdapter:
         :rtype: str
         """
         raise FilePathException('This assetstore does not expose file paths')
+
+    def safeName(self, name):
+        """
+        Girder strips item and folder names of whitespace.  If we have a name
+        that will be affected, repalce the leading and trailing whitespace with
+        underscores.
+
+        :param name: The name to possibily modify.
+        :type name: str
+        :returns: a name that will not be altered by strip.
+        :rtype: str
+        """
+        return re.sub(r'^\s+|\s+$', lambda g: '_' * len(g.group()), name)

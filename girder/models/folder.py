@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import copy
 import datetime
 import json
@@ -118,7 +117,7 @@ class Folder(AccessControlledModel):
         :type force: bool
         """
         # Ensure we include extra fields to do the migration below
-        extraFields = {'baseParentId', 'baseParentType', 'parentId', 'parentCollection',
+        extraFields = {'baseParentId', 'baseParentType', 'parentId', 'parentCollection', 'meta',
                        'name', 'lowerName'}
         loadFields = self._supplementFields(fields, extraFields)
 
@@ -474,6 +473,11 @@ class Folder(AccessControlledModel):
         :type reuseExisting: bool
         :returns: The folder document that was created.
         """
+        # We strip the name as part of validation, so if we ask to reuse the
+        # folder name and it has leading or trailing whitespace, our check may
+        # pass that it doesn't exist and then fail later when we create the
+        # folder because it exists.  Strip it to start.
+        name = name.strip()
         if reuseExisting:
             existing = self.findOne({
                 'parentId': parent['_id'],
@@ -699,10 +703,9 @@ class Folder(AccessControlledModel):
         for sub in childFolders:
             if sub['name'] == metadataFile:
                 metadataFile = None
-            for (filepath, file) in self.fileList(
-                    sub, user, path, includeMetadata, subpath=True,
-                    mimeFilter=mimeFilter, data=data):
-                yield (filepath, file)
+            yield from self.fileList(
+                sub, user, path, includeMetadata, subpath=True,
+                mimeFilter=mimeFilter, data=data)
 
         # Eagerly evaluate this list, as the MongoDB cursor can time out on long requests
         childItems = list(self.childItems(
@@ -711,9 +714,8 @@ class Folder(AccessControlledModel):
         for item in childItems:
             if item['name'] == metadataFile:
                 metadataFile = None
-            for (filepath, file) in itemModel.fileList(
-                    item, user, path, includeMetadata, mimeFilter=mimeFilter, data=data):
-                yield (filepath, file)
+            yield from itemModel.fileList(
+                item, user, path, includeMetadata, mimeFilter=mimeFilter, data=data)
 
         if includeMetadata and metadataFile and doc.get('meta', {}):
             def stream():

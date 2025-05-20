@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import bson.json_util
 import dateutil.parser
 from functools import wraps
@@ -497,7 +496,7 @@ class Describe(Resource):
 
         wsgiRoot = cherrypy.request.app.root
 
-        # This is due to the idiosyncracy of mounting the API root at both {core_girder_route}/api
+        # This is due to the idiosyncrasy of mounting the API root at both {core_girder_route}/api
         # as well as under /api. Depending which one is being used, the API root object could be
         # either at .api.v1 or just at .v1 due to the way it's mounted in server.py.
         try:

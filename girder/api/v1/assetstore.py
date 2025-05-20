@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from ..describe import Description, autoDescribeRoute
 from ..rest import Resource
 from girder import events
@@ -133,10 +132,13 @@ class Assetstore(Resource):
         .errorResponse('You are not an administrator.', 403)
     )
     def importData(self, assetstore, importPath, destinationId, destinationType, progress,
-                   leafFoldersAsItems, fileIncludeRegex, fileExcludeRegex):
+                   leafFoldersAsItems, fileIncludeRegex, fileExcludeRegex, **kwargs):
         user = self.getCurrentUser()
         parent = ModelImporter.model(destinationType).load(
             destinationId, user=user, level=AccessType.ADMIN, exc=True)
+
+        # Capture any additional parameters passed to route
+        extraParams = kwargs.get('params', {})
 
         with ProgressContext(progress, user=user, title='Importing data') as ctx:
             return self._model.importData(
@@ -144,6 +146,7 @@ class Assetstore(Resource):
                     'fileIncludeRegex': fileIncludeRegex,
                     'fileExcludeRegex': fileExcludeRegex,
                     'importPath': importPath,
+                    **extraParams
                 }, progress=ctx, user=user, leafFoldersAsItems=leafFoldersAsItems)
 
     @access.admin

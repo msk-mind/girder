@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import copy
 import datetime
 import json
@@ -105,7 +104,7 @@ class Item(acl_mixin.AccessControlMixin, Model):
         :py:func:`girder.models.model_base.AccessControlMixin.load`.
         """
         # Ensure we include extra fields to do the migration below
-        extraFields = {'baseParentId', 'baseParentType', 'parentId', 'parentCollection',
+        extraFields = {'baseParentId', 'baseParentType', 'parentId', 'parentCollection', 'meta',
                        'name', 'lowerName'}
         loadFields = self._supplementFields(fields, extraFields)
 

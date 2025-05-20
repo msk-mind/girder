@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import json
 import os
 from pkg_resources import resource_filename
@@ -73,7 +72,7 @@ def main(dev, mode, watch, watch_plugin, npm, reinstall):
 
         for path in nodeModuleDirs:
             # Include ignore_errors=True to delete readonly files
-            # and skip over nonexistant directories
+            # and skip over nonexistent directories
             shutil.rmtree(path, ignore_errors=True)
 
         # Run npm install
@@ -113,7 +112,7 @@ def _collectPluginDependencies():
 
 
 def _generatePackageJSON(staging, source, plugins):
-    with open(source, 'r') as f:
+    with open(source) as f:
         sourceJSON = json.load(f)
     deps = sourceJSON['dependencies']
     deps['@girder/core'] = 'file:%s' % os.path.join(os.path.dirname(source), 'src')

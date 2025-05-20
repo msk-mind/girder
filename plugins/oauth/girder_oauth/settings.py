@@ -28,12 +28,14 @@ class PluginSettings:
     BOX_CLIENT_ID = 'oauth.box_client_id'
     BOX_CLIENT_SECRET = 'oauth.box_client_secret'
 
+    CILOGON_CLIENT_ID = 'oauth.cilogon_client_id'
+    CILOGON_CLIENT_SECRET = 'oauth.cilogon_client_secret'
+
     KEYCLOAK_HOSTNAME = 'oauth.keycloak_hostname'
     KEYCLOAK_PORT = 'oauth.keycloak_port'
     KEYCLOAK_REALM = 'oauth.keycloak_realm'
     KEYCLOAK_CLIENT_ID = 'oauth.keycloak_id'
     KEYCLOAK_CLIENT_SECRET = 'oauth.keycloak_secret'
-
 
 
 
@@ -55,6 +57,7 @@ def _defaultIgnoreRegistrationPolicy():
     PluginSettings.BITBUCKET_CLIENT_ID,
     PluginSettings.MICROSOFT_CLIENT_ID,
     PluginSettings.BOX_CLIENT_ID,
+    PluginSettings.CILOGON_CLIENT_ID,
     PluginSettings.GOOGLE_CLIENT_SECRET,
     PluginSettings.GLOBUS_CLIENT_SECRET,
     PluginSettings.GITHUB_CLIENT_SECRET,
@@ -62,6 +65,7 @@ def _defaultIgnoreRegistrationPolicy():
     PluginSettings.BITBUCKET_CLIENT_SECRET,
     PluginSettings.MICROSOFT_CLIENT_SECRET,
     PluginSettings.BOX_CLIENT_SECRET,
+    PluginSettings.CILOGON_CLIENT_SECRET,
     PluginSettings.MICROSOFT_TENANT_ID,
     PluginSettings.KEYCLOAK_HOSTNAME,
     PluginSettings.KEYCLOAK_PORT,
@@ -93,6 +97,7 @@ def _validateIgnoreRegistrationPolicy(doc):
     PluginSettings.BITBUCKET_CLIENT_ID,
     PluginSettings.MICROSOFT_CLIENT_ID,
     PluginSettings.BOX_CLIENT_ID,
+    PluginSettings.CILOGON_CLIENT_ID,
     PluginSettings.GOOGLE_CLIENT_SECRET,
     PluginSettings.GLOBUS_CLIENT_SECRET,
     PluginSettings.GITHUB_CLIENT_SECRET,
@@ -100,6 +105,7 @@ def _validateIgnoreRegistrationPolicy(doc):
     PluginSettings.BITBUCKET_CLIENT_SECRET,
     PluginSettings.MICROSOFT_CLIENT_SECRET,
     PluginSettings.BOX_CLIENT_SECRET,
+    PluginSettings.CILOGON_CLIENT_SECRET,
     PluginSettings.MICROSOFT_TENANT_ID,
     PluginSettings.KEYCLOAK_HOSTNAME,
     PluginSettings.KEYCLOAK_PORT,

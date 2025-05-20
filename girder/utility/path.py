@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """This module contains utility methods for parsing girder path strings."""
 
 import re
@@ -42,7 +41,7 @@ def split(path):
     :rtype: `list`
     """
     # It would be better to split by the regex `(?<!\\)(?>\\\\)*/`,
-    # but python does't support atomic grouping. :(
+    # but python doesn't support atomic grouping. :(
     chunks = path.split('/')
     processed = [chunks[0]]
 

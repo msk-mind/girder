@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import datetime
 from bson import json_util
 
@@ -357,6 +356,7 @@ class Job(AccessControlledModel):
                 'overwrite': overwrite,
                 'status': status,
                 'progressTotal': progressTotal,
+                'progressCurrent': progressCurrent,
                 'progressMessage': progressMessage,
                 'otherFields': otherFields
             }
@@ -592,5 +592,4 @@ class Job(AccessControlledModel):
         query = {'parentId': job['_id']}
         cursor = self.find(query)
         user = User().load(job['userId'], force=True)
-        for r in self.filterResultsByPermission(cursor=cursor, user=user, level=AccessType.READ):
-            yield r
+        yield from self.filterResultsByPermission(cursor=cursor, user=user, level=AccessType.READ)

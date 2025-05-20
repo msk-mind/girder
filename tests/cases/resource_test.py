@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import datetime
 import io
 import json
@@ -323,7 +322,7 @@ class ResourceTestCase(base.TestCase):
         resp = self.request(path='/user', method='GET', user=self.admin)
         self.assertStatusOk(resp)
         self.assertEqual(len(resp.json), 1)
-        # Deleting a non-existant object should give an error
+        # Deleting a non-existent object should give an error
         resp = self.request(
             path='/resource', method='DELETE', user=self.admin, params={
                 'resources': json.dumps({'item': [str(self.admin['_id'])]})
@@ -603,7 +602,7 @@ class ResourceTestCase(base.TestCase):
                 'parentId': str(self.items[1]['_id'])
             })
         self.assertStatus(resp, 400)
-        # Moving a non-existant object should give an error
+        # Moving a non-existent object should give an error
         resp = self.request(
             path='/resource/move', method='PUT', user=self.admin, params={
                 'resources': json.dumps({'item': [str(self.admin['_id'])]}),
@@ -671,7 +670,7 @@ class ResourceTestCase(base.TestCase):
                             params={'folderId': str(copiedFolder['_id'])})
         self.assertStatusOk(resp)
         self.assertEqual(len(resp.json), len(self.items) + 1)
-        # Copying a non-existant object should give an error
+        # Copying a non-existent object should give an error
         resp = self.request(
             path='/resource/copy', method='POST', user=self.admin, params={
                 'resources': json.dumps({'item': [str(self.admin['_id'])]}),
@@ -709,7 +708,7 @@ class ResourceTestCase(base.TestCase):
             pass
         # Test that we don't crash on Unicode file names
         for _ in zip.addFile(
-                genEmptyFile(100), u'\u0421\u0443\u043f\u0435\u0440-\u0440'
+                genEmptyFile(100), '\u0421\u0443\u043f\u0435\u0440-\u0440'
                 '\u0443\u0441\u0441\u043a\u0438, \u0627\u0633\u0645 \u0627'
                 '\u0644\u0645\u0644\u0641 \u0628\u0627\u0644\u0644\u063a'
                 '\u0629 \u0627\u0644\u0639\u0631\u0628\u064a\u0629'):

@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 import datetime
+import logging
 import os
 import re
 from passlib.context import CryptContext
@@ -13,6 +13,12 @@ from girder.exceptions import AccessException, ValidationException
 from girder.settings import SettingKey
 from girder.utility import config, mail_utils
 from girder.utility._cache import rateLimitBuffer
+
+
+# If logging is at DEBUG level, passlib with fail because of
+#  https://github.com/pyca/bcrypt/issues/684
+# Asking passlib to only log errors resolves this.
+logging.getLogger('passlib').setLevel(logging.ERROR)
 
 
 class User(AccessControlledModel):
@@ -463,8 +469,9 @@ class User(AccessControlledModel):
             'user': user,
             'url': url
         })
+        brandName = Setting().get(SettingKey.BRAND_NAME)
         mail_utils.sendMailToAdmins(
-            'Girder: Account pending approval',
+            f'{brandName}: Account pending approval',
             text)
 
     def _sendApprovedEmail(self, user):
@@ -558,9 +565,8 @@ class User(AccessControlledModel):
             fields=['name'] + (['meta'] if includeMetadata else [])
         ))
         for folder in childFolders:
-            for (filepath, file) in folderModel.fileList(
-                    folder, user, path, includeMetadata, subpath=True, data=data):
-                yield (filepath, file)
+            yield from folderModel.fileList(
+                folder, user, path, includeMetadata, subpath=True, data=data)
 
     def subtreeCount(self, doc, includeItems=True, user=None, level=None):
         """

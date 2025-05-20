@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 import filelock
 from hashlib import sha512
 import io
+import mimetypes
 import os
 import psutil
 import shutil
@@ -335,6 +335,7 @@ class FilesystemAssetstoreAdapter(AbstractAssetstoreAdapter):
                      path, item['_id'], self.assetstore['_id'])
         stat = os.stat(path)
         name = name or os.path.basename(path)
+        mimeType = mimeType or mimetypes.guess_type(name)[0]
 
         file = File().createFile(
             name=name, creator=user, item=item, reuseExisting=True, assetstore=self.assetstore,
@@ -350,7 +351,7 @@ class FilesystemAssetstoreAdapter(AbstractAssetstoreAdapter):
     def _importDataAsItem(self, name, user, folder, path, files, reuseExisting=True, params=None):
         params = params or {}
         item = Item().createItem(
-            name=name, creator=user, folder=folder, reuseExisting=reuseExisting)
+            name=self.safeName(name), creator=user, folder=folder, reuseExisting=reuseExisting)
         events.trigger('filesystem_assetstore_imported',
                        {'id': item['_id'], 'type': 'item',
                         'importPath': path})
@@ -367,7 +368,8 @@ class FilesystemAssetstoreAdapter(AbstractAssetstoreAdapter):
             raise ValidationException(
                 'Files cannot be imported directly underneath a %s.' % parentType)
 
-        item = Item().createItem(name=name, creator=user, folder=parent, reuseExisting=True)
+        item = Item().createItem(name=self.safeName(name), creator=user,
+                                 folder=parent, reuseExisting=True)
         events.trigger('filesystem_assetstore_imported', {
             'id': item['_id'],
             'type': 'item',
@@ -409,8 +411,8 @@ class FilesystemAssetstoreAdapter(AbstractAssetstoreAdapter):
                     self._importDataAsItem(name, user, parent, path, localListDir, params=params)
                 else:
                     folder = Folder().createFolder(
-                        parent=parent, name=name, parentType=parentType,
-                        creator=user, reuseExisting=True)
+                        parent=parent, name=self.safeName(name),
+                        parentType=parentType, creator=user, reuseExisting=True)
                     events.trigger(
                         'filesystem_assetstore_imported', {
                             'id': folder['_id'],

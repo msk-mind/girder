@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import html
 import cherrypy
 import collections
@@ -8,6 +7,7 @@ import inspect
 import json
 import posixpath
 import pymongo
+import pymongo.command_cursor
 import sys
 import traceback
 import types
@@ -283,22 +283,29 @@ def getBodyJson(allowConstants=False):
     parsed value, or raises a :class:`girder.api.rest.RestException` for
     invalid JSON.
 
+    It's important to note that this function caches the parsed JSON body; subsequent
+    calls to this within the same request lifecycle will always return the same object as
+    the first call, regardless of the arguments passed in to this function.
+
     :param allowConstants: Whether the keywords Infinity, -Infinity, and NaN
         should be allowed. These keywords are valid JavaScript and will parse
         to the correct float values, but are not valid in strict JSON.
     :type allowConstants: bool
     """
-    if allowConstants:
-        _parseConstants = None
-    else:
-        def _parseConstants(val):
-            raise RestException('Error: "%s" is not valid JSON.' % val)
+    if not hasattr(cherrypy.request, 'girderBodyJson'):
+        if allowConstants:
+            _parseConstants = None
+        else:
+            def _parseConstants(val):
+                raise RestException('Error: "%s" is not valid JSON.' % val)
 
-    text = cherrypy.request.body.read().decode('utf8')
-    try:
-        return json.loads(text, parse_constant=_parseConstants)
-    except ValueError:
-        raise RestException('Invalid JSON passed in request body.')
+        text = cherrypy.request.body.read().decode('utf8')
+        try:
+            cherrypy.request.girderBodyJson = json.loads(text, parse_constant=_parseConstants)
+        except ValueError:
+            raise RestException('Invalid JSON passed in request body.')
+
+    return cherrypy.request.girderBodyJson
 
 
 def getParamJson(name, params, default=None):
@@ -751,7 +758,7 @@ def _setCommonCORSHeaders():
         allowedList = {o.strip() for o in allowed.split(',')}
         allowedListWithoutWildcard = allowedList - {'*'}
 
-        if any((fnmatch.fnmatch(origin, pattern) for pattern in allowedListWithoutWildcard)):
+        if any(fnmatch.fnmatch(origin, pattern) for pattern in allowedListWithoutWildcard):
             setResponseHeader('Access-Control-Allow-Origin', origin)
         elif '*' in allowedList:
             setResponseHeader('Access-Control-Allow-Origin', '*')
@@ -1182,6 +1189,9 @@ class Resource:
         cookie['girderToken'] = str(token['_id'])
         cookie['girderToken']['path'] = '/'
         cookie['girderToken']['expires'] = int(days * 3600 * 24)
+
+        if Setting().get(SettingKey.HTTP_ONLY_COOKIES):
+            cookie['girderToken']['httponly'] = True
 
         # CherryPy proxy tools modify the request.base, but not request.scheme, when receiving
         # X-Forwarded-Proto headers from a reverse proxy
