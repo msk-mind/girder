@@ -84,7 +84,6 @@ class Keycloak(ProviderBase):
 
         # The user's full name is in the payload, but is not split into first and last names
 
-        discovery = self._getJson(method='GET', url=self._DISCOVERY_URL)
         userinfoUrl = Keycloak.getUserinfoUrl()
 
         userinfo = self._getJson(method='GET', url=userinfoUrl, headers={
