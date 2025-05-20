@@ -57,6 +57,9 @@ var ConfigView = View.extend({
             name: 'Google',
             icon: 'google',
             hasAuthorizedOrigins: true,
+            takesHostname: false,
+            takesPort: false,
+            takesRealm: false,
             takesTenantId: false,
             instructions: 'Client IDs and secret keys are managed in the Google ' +
                           'Developer Console. When creating your client ID there, ' +
@@ -66,6 +69,9 @@ var ConfigView = View.extend({
             name: 'Globus',
             icon: 'globe',
             hasAuthorizedOrigins: false,
+            takesHostname: false,
+            takesPort: false,
+            takesRealm: false,
             takesTenantId: false,
             instructions: 'Client IDs and secret keys are managed in the Google ' +
                           'Developer Console. When creating your client ID there, ' +
@@ -75,6 +81,9 @@ var ConfigView = View.extend({
             name: 'GitHub',
             icon: 'github-circled',
             hasAuthorizedOrigins: false,
+            takesHostname: false,
+            takesPort: false,
+            takesRealm: false,
             takesTenantId: false,
             instructions: 'Client IDs and secret keys are managed in the ' +
                           'Applications page of your GitHub account settings. ' +
@@ -84,6 +93,9 @@ var ConfigView = View.extend({
             name: 'Bitbucket',
             icon: 'bitbucket',
             hasAuthorizedOrigins: false,
+            takesHostname: false,
+            takesPort: false,
+            takesRealm: false,
             takesTenantId: false,
             instructions: 'Client IDs and secret keys are managed in the ' +
                           'Applications page of your Bitbucket account settings. ' +
@@ -93,6 +105,9 @@ var ConfigView = View.extend({
             name: 'Microsoft',
             icon: 'microsoft',
             hasAuthorizedOrigins: false,
+            takesHostname: false,
+            takesPort: false,
+            takesRealm: false,
             takesTenantId: true,
             instructions: 'Application (client) ID and secret keys can be found ' +
                           'at the "Overview" and "Certificates & secrets" sections ' +
@@ -105,6 +120,9 @@ var ConfigView = View.extend({
             name: 'LinkedIn',
             icon: 'linkedin',
             hasAuthorizedOrigins: false,
+            takesHostname: false,
+            takesPort: false,
+            takesRealm: false,
             takesTenantId: false,
             instructions: 'Client IDs and secret keys are managed at the ' +
                           'Applications page of the LinkedIn Developers site. ' +
@@ -116,6 +134,9 @@ var ConfigView = View.extend({
             name: 'Box',
             icon: 'box-brand',
             hasAuthorizedOrigins: false,
+            takesHostname: false,
+            takesPort: false,
+            takesRealm: false,
             takesTenantId: false,
             instructions: 'Client IDs and secret keys are managed in the Box ' +
                           'Developer Services page. When creating your client ID ' +
@@ -125,8 +146,23 @@ var ConfigView = View.extend({
             name: 'CILogon',
             icon: 'cilogon',
             hasAuthorizedOrigins: false,
+            takesHostname: false,
+            takesPort: false,
+            takesRealm: false,
             takesTenantId: false,
             instructions: 'Client IDs and secret keys are managed through the CILogon ' +
+                          'Client Registration page. When creating your client ID ' +
+                          'there, use the following as the authorization callback URL:'
+        }, {
+            id: 'keycloak',
+            name: 'Keycloak',
+            icon: 'keycloak',
+            hasAuthorizedOrigins: false,
+            takesHostname: true,
+            takesPort: true,
+            takesRealm: true,
+            takesTenantId: false,
+            instructions: 'Client IDs and secret keys are managed through the Keycloak ' +
                           'Client Registration page. When creating your client ID ' +
                           'there, use the following as the authorization callback URL:'
         }];
@@ -134,6 +170,15 @@ var ConfigView = View.extend({
 
         var settingKeys = ['oauth.ignore_registration_policy'];
         _.each(this.providerIds, function (id) {
+            if (_.findWhere(this.providers, { id: id }).takesHostname) {
+                settingKeys.push('oauth.' + id + '_hostname');
+            }
+            if (_.findWhere(this.providers, { id: id }).takesPort) {
+                settingKeys.push('oauth.' + id + '_port');
+            }
+            if (_.findWhere(this.providers, { id: id }).takesRealm) {
+                settingKeys.push('oauth.' + id + '_realm');
+            }
             settingKeys.push('oauth.' + id + '_client_id');
             settingKeys.push('oauth.' + id + '_client_secret');
             if (_.findWhere(this.providers, { id: id }).takesTenantId) {

@@ -41,6 +41,21 @@ p Only fill in the information for the OAuth2 providers you wish to enable.
                 label.control-label(for=`g-oauth-provider-${provider.id}-tenant-id`) #{provider.name} tenant ID
                 input.input-sm.form-control(id=`g-oauth-provider-${provider.id}-tenant-id`,
                     type="text", placeholder="Tenant ID, e.g., 885af973-684f-2561-7a74-5bedd6a0d901")
+            if provider.takesRealm
+              .form-group
+                label.control-label(for=`g-oauth-provider-${provider.id}-realm`) #{provider.name} realm
+                input.input-sm.form-control(id=`g-oauth-provider-${provider.id}-realm`,
+                    type="text", placeholder="realm, e.g., main")
+            if provider.takesHostname
+              .form-group
+                label.control-label(for=`g-oauth-provider-${provider.id}-hostname`) #{provider.name} hostname
+                input.input-sm.form-control(id=`g-oauth-provider-${provider.id}-hostname`,
+                    type="text", placeholder="hostname, e.g., localhost")
+            if provider.takesPort
+              .form-group
+                label.control-label(for=`g-oauth-provider-${provider.id}-port`) #{provider.name} port
+                input.input-sm.form-control(id=`g-oauth-provider-${provider.id}-port`,
+                    type="text", placeholder="port, e.g., 8374")
             .form-group
               label.control-label(for=`g-oauth-provider-${provider.id}-client-id`) #{provider.name} client ID
               input.input-sm.form-control(id=`g-oauth-provider-${provider.id}-client-id`,
