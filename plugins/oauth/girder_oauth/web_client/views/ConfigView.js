@@ -23,6 +23,24 @@ var ConfigView = View.extend({
                 key: 'oauth.' + providerId + '_client_secret',
                 value: this.$('#g-oauth-provider-' + providerId + '-client-secret').val().trim()
             }];
+            if (_.findWhere(this.providers, { id: providerId }).takesRealm) {
+                settings.push({
+                    key: 'oauth.' + providerId + '_realm',
+                    value: this.$('#g-oauth-provider-' + providerId + '-realm').val().trim()
+                });
+            }
+            if (_.findWhere(this.providers, { id: providerId }).takesHostname) {
+                settings.push({
+                    key: 'oauth.' + providerId + '_hostname',
+                    value: this.$('#g-oauth-provider-' + providerId + '-hostname').val().trim()
+                });
+            }
+            if (_.findWhere(this.providers, { id: providerId }).takesPort) {
+                settings.push({
+                    key: 'oauth.' + providerId + '_port',
+                    value: this.$('#g-oauth-provider-' + providerId + '-port').val().trim()
+                });
+            }
             if (_.findWhere(this.providers, { id: providerId }).takesTenantId) {
                 settings.push({
                     key: 'oauth.' + providerId + '_tenant_id',

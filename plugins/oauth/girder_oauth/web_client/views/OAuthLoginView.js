@@ -96,6 +96,10 @@ var OAuthLoginView = View.extend({
         cilogon: {
             icon: 'cilogon',
             class: 'g-oauth-button-box'
+        },
+        keycloak: {
+            icon: 'keycloak',
+            class: 'g-oauth-button-box'
         }
     }
 });
