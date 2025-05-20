@@ -28,6 +28,14 @@ class PluginSettings:
     BOX_CLIENT_ID = 'oauth.box_client_id'
     BOX_CLIENT_SECRET = 'oauth.box_client_secret'
 
+    KEYCLOAK_HOSTNAME = 'oauth.keycloak_hostname'
+    KEYCLOAK_PORT = 'oauth.keycloak_port'
+    KEYCLOAK_REALM = 'oauth.keycloak_realm'
+    KEYCLOAK_CLIENT_ID = 'oauth.keycloak_id'
+    KEYCLOAK_CLIENT_SECRET = 'oauth.keycloak_secret'
+
+
+
 
 @setting_utilities.default(PluginSettings.PROVIDERS_ENABLED)
 def _defaultProvidersEnabled():
@@ -55,6 +63,11 @@ def _defaultIgnoreRegistrationPolicy():
     PluginSettings.MICROSOFT_CLIENT_SECRET,
     PluginSettings.BOX_CLIENT_SECRET,
     PluginSettings.MICROSOFT_TENANT_ID,
+    PluginSettings.KEYCLOAK_HOSTNAME,
+    PluginSettings.KEYCLOAK_PORT,
+    PluginSettings.KEYCLOAK_REALM,
+    PluginSettings.KEYCLOAK_CLIENT_ID,
+    PluginSettings.KEYCLOAK_CLIENT_SECRET,
 })
 def _defaultOtherSettings():
     return ''
@@ -88,6 +101,11 @@ def _validateIgnoreRegistrationPolicy(doc):
     PluginSettings.MICROSOFT_CLIENT_SECRET,
     PluginSettings.BOX_CLIENT_SECRET,
     PluginSettings.MICROSOFT_TENANT_ID,
+    PluginSettings.KEYCLOAK_HOSTNAME,
+    PluginSettings.KEYCLOAK_PORT,
+    PluginSettings.KEYCLOAK_REALM,
+    PluginSettings.KEYCLOAK_CLIENT_ID,
+    PluginSettings.KEYCLOAK_CLIENT_SECRET,
 })
 def _validateOtherSettings(doc):
     pass
