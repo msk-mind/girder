@@ -19,19 +19,18 @@ class Keycloak(ProviderBase):
     @staticmethod
     def getOidcUrl():
         settings = Setting()
-        return
-        f"http://{settings.get(PluginSettings.KEYCLOAK_HOSTNAME)}:{settings.get(PluginSettings.KEYCLOAK_PORT)}/realms/{settings.get(PluginSettings.KEYCLOAK_REALM)}/protocol/openid-connect"
+        return f"http://{settings.get(PluginSettings.KEYCLOAK_HOSTNAME)}:{settings.get(PluginSettings.KEYCLOAK_PORT)}/realms/{settings.get(PluginSettings.KEYCLOAK_REALM)}/protocol/openid-connect"
 
     @staticmethod
     def getAuthUrl():
         return Keycloak.getOidcUrl() + "/auth"
 
     @staticmethod
-    def getTokenUrl(self):
+    def getTokenUrl():
         return Keycloak.getOidcUrl() + "/token"
 
     @staticmethod
-    def getUserinfoUrl(self):
+    def getUserinfoUrl():
         return Keycloak.getOidcUrl() + "/userinfo"
 
 
@@ -73,8 +72,7 @@ class Keycloak(ProviderBase):
     def getUser(self, token):
         idToken = token['id_token']
 
-        # Because the token came directly from Keycloak API, we don't need to verify it
-        payload = jwt.decode(idToken, verify=False)
+        payload = jwt.decode(idToken, algorithms=['HS256'], options={'verify_signature': False})
 
         oauthId = payload['sub']
 

@@ -34,8 +34,8 @@ class PluginSettings:
     KEYCLOAK_HOSTNAME = 'oauth.keycloak_hostname'
     KEYCLOAK_PORT = 'oauth.keycloak_port'
     KEYCLOAK_REALM = 'oauth.keycloak_realm'
-    KEYCLOAK_CLIENT_ID = 'oauth.keycloak_id'
-    KEYCLOAK_CLIENT_SECRET = 'oauth.keycloak_secret'
+    KEYCLOAK_CLIENT_ID = 'oauth.keycloak_client_id'
+    KEYCLOAK_CLIENT_SECRET = 'oauth.keycloak_client_secret'
 
 
 

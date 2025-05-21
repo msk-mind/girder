@@ -248,6 +248,18 @@ var ConfigView = View.extend({
                     this.$('#g-oauth-provider-' + id + '-tenant-id').val(
                         this.settingVals['oauth.' + id + '_tenant_id']);
                 }
+                if (_.findWhere(this.providers, { id: id }).takesHostname) {
+                    this.$('#g-oauth-provider-' + id + '-hostname').val(
+                        this.settingVals['oauth.' + id + '_hostname']);
+                }
+                if (_.findWhere(this.providers, { id: id }).takesPort) {
+                    this.$('#g-oauth-provider-' + id + '-port').val(
+                        this.settingVals['oauth.' + id + '_port']);
+                }
+                if (_.findWhere(this.providers, { id: id }).takesRealm) {
+                    this.$('#g-oauth-provider-' + id + '-realm').val(
+                        this.settingVals['oauth.' + id + '_realm']);
+                }
             }, this);
 
             var checked = this.settingVals['oauth.ignore_registration_policy'];
