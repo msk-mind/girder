@@ -31,8 +31,7 @@ class PluginSettings:
     CILOGON_CLIENT_ID = 'oauth.cilogon_client_id'
     CILOGON_CLIENT_SECRET = 'oauth.cilogon_client_secret'
 
-    KEYCLOAK_HOSTNAME = 'oauth.keycloak_hostname'
-    KEYCLOAK_PORT = 'oauth.keycloak_port'
+    KEYCLOAK_URL = 'oauth.keycloak_url'
     KEYCLOAK_REALM = 'oauth.keycloak_realm'
     KEYCLOAK_CLIENT_ID = 'oauth.keycloak_client_id'
     KEYCLOAK_CLIENT_SECRET = 'oauth.keycloak_client_secret'
@@ -67,8 +66,7 @@ def _defaultIgnoreRegistrationPolicy():
     PluginSettings.BOX_CLIENT_SECRET,
     PluginSettings.CILOGON_CLIENT_SECRET,
     PluginSettings.MICROSOFT_TENANT_ID,
-    PluginSettings.KEYCLOAK_HOSTNAME,
-    PluginSettings.KEYCLOAK_PORT,
+    PluginSettings.KEYCLOAK_URL,
     PluginSettings.KEYCLOAK_REALM,
     PluginSettings.KEYCLOAK_CLIENT_ID,
     PluginSettings.KEYCLOAK_CLIENT_SECRET,
@@ -107,8 +105,7 @@ def _validateIgnoreRegistrationPolicy(doc):
     PluginSettings.BOX_CLIENT_SECRET,
     PluginSettings.CILOGON_CLIENT_SECRET,
     PluginSettings.MICROSOFT_TENANT_ID,
-    PluginSettings.KEYCLOAK_HOSTNAME,
-    PluginSettings.KEYCLOAK_PORT,
+    PluginSettings.KEYCLOAK_URL,
     PluginSettings.KEYCLOAK_REALM,
     PluginSettings.KEYCLOAK_CLIENT_ID,
     PluginSettings.KEYCLOAK_CLIENT_SECRET,

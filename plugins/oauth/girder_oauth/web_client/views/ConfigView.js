@@ -29,16 +29,10 @@ var ConfigView = View.extend({
                     value: this.$('#g-oauth-provider-' + providerId + '-realm').val().trim()
                 });
             }
-            if (_.findWhere(this.providers, { id: providerId }).takesHostname) {
+            if (_.findWhere(this.providers, { id: providerId }).takesUrl) {
                 settings.push({
-                    key: 'oauth.' + providerId + '_hostname',
-                    value: this.$('#g-oauth-provider-' + providerId + '-hostname').val().trim()
-                });
-            }
-            if (_.findWhere(this.providers, { id: providerId }).takesPort) {
-                settings.push({
-                    key: 'oauth.' + providerId + '_port',
-                    value: this.$('#g-oauth-provider-' + providerId + '-port').val().trim()
+                    key: 'oauth.' + providerId + '_url',
+                    value: this.$('#g-oauth-provider-' + providerId + '-url').val().trim()
                 });
             }
             if (_.findWhere(this.providers, { id: providerId }).takesTenantId) {
@@ -75,8 +69,7 @@ var ConfigView = View.extend({
             name: 'Google',
             icon: 'google',
             hasAuthorizedOrigins: true,
-            takesHostname: false,
-            takesPort: false,
+            takesUrl: false,
             takesRealm: false,
             takesTenantId: false,
             instructions: 'Client IDs and secret keys are managed in the Google ' +
@@ -87,8 +80,7 @@ var ConfigView = View.extend({
             name: 'Globus',
             icon: 'globe',
             hasAuthorizedOrigins: false,
-            takesHostname: false,
-            takesPort: false,
+            takesUrl: false,
             takesRealm: false,
             takesTenantId: false,
             instructions: 'Client IDs and secret keys are managed in the Google ' +
@@ -99,8 +91,7 @@ var ConfigView = View.extend({
             name: 'GitHub',
             icon: 'github-circled',
             hasAuthorizedOrigins: false,
-            takesHostname: false,
-            takesPort: false,
+            takesUrl: false,
             takesRealm: false,
             takesTenantId: false,
             instructions: 'Client IDs and secret keys are managed in the ' +
@@ -111,8 +102,7 @@ var ConfigView = View.extend({
             name: 'Bitbucket',
             icon: 'bitbucket',
             hasAuthorizedOrigins: false,
-            takesHostname: false,
-            takesPort: false,
+            takesUrl: false,
             takesRealm: false,
             takesTenantId: false,
             instructions: 'Client IDs and secret keys are managed in the ' +
@@ -123,8 +113,7 @@ var ConfigView = View.extend({
             name: 'Microsoft',
             icon: 'microsoft',
             hasAuthorizedOrigins: false,
-            takesHostname: false,
-            takesPort: false,
+            takesUrl: false,
             takesRealm: false,
             takesTenantId: true,
             instructions: 'Application (client) ID and secret keys can be found ' +
@@ -138,8 +127,7 @@ var ConfigView = View.extend({
             name: 'LinkedIn',
             icon: 'linkedin',
             hasAuthorizedOrigins: false,
-            takesHostname: false,
-            takesPort: false,
+            takesUrl: false,
             takesRealm: false,
             takesTenantId: false,
             instructions: 'Client IDs and secret keys are managed at the ' +
@@ -152,8 +140,7 @@ var ConfigView = View.extend({
             name: 'Box',
             icon: 'box-brand',
             hasAuthorizedOrigins: false,
-            takesHostname: false,
-            takesPort: false,
+            takesUrl: false,
             takesRealm: false,
             takesTenantId: false,
             instructions: 'Client IDs and secret keys are managed in the Box ' +
@@ -164,8 +151,7 @@ var ConfigView = View.extend({
             name: 'CILogon',
             icon: 'cilogon',
             hasAuthorizedOrigins: false,
-            takesHostname: false,
-            takesPort: false,
+            takesUrl: false,
             takesRealm: false,
             takesTenantId: false,
             instructions: 'Client IDs and secret keys are managed through the CILogon ' +
@@ -176,8 +162,7 @@ var ConfigView = View.extend({
             name: 'Keycloak',
             icon: 'keycloak',
             hasAuthorizedOrigins: false,
-            takesHostname: true,
-            takesPort: true,
+            takesUrl: true,
             takesRealm: true,
             takesTenantId: false,
             instructions: 'Client IDs and secret keys are managed through the Keycloak ' +
@@ -188,11 +173,8 @@ var ConfigView = View.extend({
 
         var settingKeys = ['oauth.ignore_registration_policy'];
         _.each(this.providerIds, function (id) {
-            if (_.findWhere(this.providers, { id: id }).takesHostname) {
-                settingKeys.push('oauth.' + id + '_hostname');
-            }
-            if (_.findWhere(this.providers, { id: id }).takesPort) {
-                settingKeys.push('oauth.' + id + '_port');
+            if (_.findWhere(this.providers, { id: id }).takesUrl) {
+                settingKeys.push('oauth.' + id + '_url');
             }
             if (_.findWhere(this.providers, { id: id }).takesRealm) {
                 settingKeys.push('oauth.' + id + '_realm');
@@ -248,13 +230,9 @@ var ConfigView = View.extend({
                     this.$('#g-oauth-provider-' + id + '-tenant-id').val(
                         this.settingVals['oauth.' + id + '_tenant_id']);
                 }
-                if (_.findWhere(this.providers, { id: id }).takesHostname) {
-                    this.$('#g-oauth-provider-' + id + '-hostname').val(
-                        this.settingVals['oauth.' + id + '_hostname']);
-                }
-                if (_.findWhere(this.providers, { id: id }).takesPort) {
-                    this.$('#g-oauth-provider-' + id + '-port').val(
-                        this.settingVals['oauth.' + id + '_port']);
+                if (_.findWhere(this.providers, { id: id }).takesUrl) {
+                    this.$('#g-oauth-provider-' + id + '-url').val(
+                        this.settingVals['oauth.' + id + '_url']);
                 }
                 if (_.findWhere(this.providers, { id: id }).takesRealm) {
                     this.$('#g-oauth-provider-' + id + '-realm').val(

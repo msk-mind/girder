@@ -46,16 +46,11 @@ p Only fill in the information for the OAuth2 providers you wish to enable.
                 label.control-label(for=`g-oauth-provider-${provider.id}-realm`) #{provider.name} realm
                 input.input-sm.form-control(id=`g-oauth-provider-${provider.id}-realm`,
                     type="text", placeholder="realm, e.g., main")
-            if provider.takesHostname
+            if provider.takesUrl
               .form-group
-                label.control-label(for=`g-oauth-provider-${provider.id}-hostname`) #{provider.name} hostname
-                input.input-sm.form-control(id=`g-oauth-provider-${provider.id}-hostname`,
-                    type="text", placeholder="hostname, e.g., localhost")
-            if provider.takesPort
-              .form-group
-                label.control-label(for=`g-oauth-provider-${provider.id}-port`) #{provider.name} port
-                input.input-sm.form-control(id=`g-oauth-provider-${provider.id}-port`,
-                    type="text", placeholder="port, e.g., 8374")
+                label.control-label(for=`g-oauth-provider-${provider.id}-url`) #{provider.name} url
+                input.input-sm.form-control(id=`g-oauth-provider-${provider.id}-url`,
+                    type="text", placeholder="url, e.g., http://localhost:8088")
             .form-group
               label.control-label(for=`g-oauth-provider-${provider.id}-client-id`) #{provider.name} client ID
               input.input-sm.form-control(id=`g-oauth-provider-${provider.id}-client-id`,

@@ -19,7 +19,7 @@ class Keycloak(ProviderBase):
     @staticmethod
     def getOidcUrl():
         settings = Setting()
-        return f"http://{settings.get(PluginSettings.KEYCLOAK_HOSTNAME)}:{settings.get(PluginSettings.KEYCLOAK_PORT)}/realms/{settings.get(PluginSettings.KEYCLOAK_REALM)}/protocol/openid-connect"
+        return f"{settings.get(PluginSettings.KEYCLOAK_URL)}/realms/{settings.get(PluginSettings.KEYCLOAK_REALM)}/protocol/openid-connect"
 
     @staticmethod
     def getAuthUrl():
