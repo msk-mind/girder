@@ -27,8 +27,8 @@ class OAuth(Resource):
     
     def _addToKeycloakGroup(self, user):
         keycloak_group_name = "keycloak_users"
-        keycloak_group = Group.findOne({"name" : keycloak_group_name})        
-        Group.addUser(keycloak_group, user, level=AccessType.READ)
+        keycloak_group = Group().findOne({"name" : keycloak_group_name})        
+        Group().addUser(keycloak_group, user, level=AccessType.READ)
 
     def _createStateToken(self, redirect):
         csrfToken = Token().createToken(days=0.25)
