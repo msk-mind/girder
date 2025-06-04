@@ -134,7 +134,7 @@ class OAuth(Resource):
         user = providerObj.getUser(token)
         User().verifyLogin(user)
 
-        if providerName.lower() == 'keycloak':
+        if user and providerName.lower() == 'keycloak':
             self._addToKeycloakGroup(user)
 
         event = events.trigger('oauth.auth_callback.after', {
