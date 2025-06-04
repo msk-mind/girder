@@ -11,6 +11,7 @@ from girder.api import access
 from girder.models.setting import Setting
 from girder.models.user import User
 from girder.models.token import Token
+from girder.models.group import Group
 
 from . import providers
 from .settings import PluginSettings
@@ -23,6 +24,12 @@ class OAuth(Resource):
 
         self.route('GET', ('provider',), self.listProviders)
         self.route('GET', (':provider', 'callback'), self.callback)
+    
+    def _addToKeycloakGroup(self, user):
+        keycloak_group_name = "keycloak_users"
+        keycloak_group = Group().findOne({"name" : keycloak_group_name})        
+        if keycloak_group:
+            Group().addUser(keycloak_group, user, level=AccessType.READ)
 
     def _createStateToken(self, redirect):
         csrfToken = Token().createToken(days=0.25)
@@ -126,6 +133,9 @@ class OAuth(Resource):
 
         user = providerObj.getUser(token)
         User().verifyLogin(user)
+
+        if user and providerName.lower() == 'keycloak':
+            self._addToKeycloakGroup(user)
 
         event = events.trigger('oauth.auth_callback.after', {
             'provider': provider,
