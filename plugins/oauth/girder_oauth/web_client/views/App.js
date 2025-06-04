@@ -4,16 +4,16 @@ import { splitRoute } from '@girder/core/misc';
 import { wrap } from '@girder/core/utilities/PluginUtils';
 import { fetchCurrentUser } from '@girder/core/auth';
 
-wrap(App, 'start', function (start) {
+wrap(App, 'initialize', function (initialize) {
     // login to default OAuth2 provider
-    var redirect = start.redirect || splitRoute(window.location.href).base;
+    // var redirect = initialize.redirect || splitRoute(window.location.href).base;
 
     var afterFetch = (user) => {
         if (!user) {
             restRequest({
                 url: 'oauth/provider',
                 data: {
-                    redirect: redirect
+                    redirect: window.location.href
                 } }).done((resp) => {
                 if ('Keycloak' in resp) {
                     window.location = resp['Keycloak']
@@ -24,6 +24,5 @@ wrap(App, 'start', function (start) {
 
     fetchCurrentUser().done(afterFetch);
 
-    start.call(this);
-
+    initialize.call(this);
 })
