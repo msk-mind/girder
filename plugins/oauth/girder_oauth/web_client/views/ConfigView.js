@@ -22,7 +22,8 @@ var ConfigView = View.extend({
             }, {
                 key: 'oauth.' + providerId + '_client_secret',
                 value: this.$('#g-oauth-provider-' + providerId + '-client-secret').val().trim()
-            }];
+            },
+            ];
             if (_.findWhere(this.providers, { id: providerId }).takesRealm) {
                 settings.push({
                     key: 'oauth.' + providerId + '_realm',
@@ -42,6 +43,24 @@ var ConfigView = View.extend({
                 });
             }
             this._saveSettings(providerId, settings);
+        },
+
+        'change #g-autologin-oauth-provider': function (event) {
+            restRequest({
+                method: 'PUT',
+                url: 'system/setting',
+                data: {
+                    key: 'oauth.autologin_provider',
+                    value: $(event.target).val().trim()
+                }
+            }).done(() => {
+                events.trigger('g:alert', {
+                    icon: 'ok',
+                    text: 'Setting saved.',
+                    type: 'success',
+                    timeout: 3000
+                });
+            });
         },
 
         'change .g-ignore-registration-policy': function (event) {
@@ -171,7 +190,7 @@ var ConfigView = View.extend({
         }];
         this.providerIds = _.pluck(this.providers, 'id');
 
-        var settingKeys = ['oauth.ignore_registration_policy'];
+        var settingKeys = ['oauth.ignore_registration_policy', 'oauth.autologin_provider'];
         _.each(this.providerIds, function (id) {
             if (_.findWhere(this.providers, { id: id }).takesUrl) {
                 settingKeys.push('oauth.' + id + '_url');
@@ -242,6 +261,9 @@ var ConfigView = View.extend({
 
             var checked = this.settingVals['oauth.ignore_registration_policy'];
             this.$('.g-ignore-registration-policy').attr('checked', checked ? 'checked' : null);
+
+            this.$('#g-autologin-oauth-provider').val(this.settingVals['oauth.autologin_provider'])
+
         }
 
         return this;

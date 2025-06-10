@@ -6,23 +6,24 @@ import { fetchCurrentUser } from '@girder/core/auth';
 
 wrap(App, 'initialize', function (initialize) {
     // login to default OAuth2 provider
-    // var redirect = initialize.redirect || splitRoute(window.location.href).base;
-
+    //
     var afterFetch = (user) => {
         if (!user) {
             restRequest({
-                url: 'oauth/provider',
+                url: 'oauth/autologin_provider',
                 data: {
                     redirect: window.location.href
-                } }).done((resp) => {
-                if ('Keycloak' in resp) {
-                    window.location = resp['Keycloak']
-                }
-            })
+                } }).done(
+                    (resp) => {
+                        if (resp)
+                            window.location = resp['url']
+                    }
+                )
         }
     }
 
     fetchCurrentUser().done(afterFetch);
+
 
     initialize.call(this);
 })

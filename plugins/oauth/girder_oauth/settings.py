@@ -5,6 +5,7 @@ from girder.utility import setting_utilities
 class PluginSettings:
     PROVIDERS_ENABLED = 'oauth.providers_enabled'
     IGNORE_REGISTRATION_POLICY = 'oauth.ignore_registration_policy'
+    AUTOLOGIN_PROVIDER = 'oauth.autologin_provider'
 
     GOOGLE_CLIENT_ID = 'oauth.google_client_id'
     GOOGLE_CLIENT_SECRET = 'oauth.google_client_secret'
@@ -41,6 +42,11 @@ class PluginSettings:
 @setting_utilities.default(PluginSettings.PROVIDERS_ENABLED)
 def _defaultProvidersEnabled():
     return []
+
+
+@setting_utilities.default(PluginSettings.AUTOLOGIN_PROVIDER)
+def _defaultAutologinProvider():
+    return ''
 
 
 @setting_utilities.default(PluginSettings.IGNORE_REGISTRATION_POLICY)
@@ -109,6 +115,7 @@ def _validateIgnoreRegistrationPolicy(doc):
     PluginSettings.KEYCLOAK_REALM,
     PluginSettings.KEYCLOAK_CLIENT_ID,
     PluginSettings.KEYCLOAK_CLIENT_SECRET,
+    PluginSettings.AUTOLOGIN_PROVIDER,
 })
 def _validateOtherSettings(doc):
     pass

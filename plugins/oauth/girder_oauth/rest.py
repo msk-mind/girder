@@ -23,11 +23,12 @@ class OAuth(Resource):
         self.resourceName = 'oauth'
 
         self.route('GET', ('provider',), self.listProviders)
+        self.route('GET', ('autologin_provider',), self.getAutologinProvider)
         self.route('GET', (':provider', 'callback'), self.callback)
-    
+
     def _addToKeycloakGroup(self, user):
         keycloak_group_name = "keycloak_users"
-        keycloak_group = Group().findOne({"name" : keycloak_group_name})        
+        keycloak_group = Group().findOne({"name" : keycloak_group_name})
         if keycloak_group:
             Group().addUser(keycloak_group, user, level=AccessType.READ)
 
@@ -98,6 +99,28 @@ class OAuth(Resource):
                 provider.getProviderName(external=True): provider.getUrl(state)
                 for provider in enabledProviders
             }
+
+    @access.public
+    @autoDescribeRoute(
+        Description("Get autologin OAuth2 provider and its URL")
+        .param('redirect', 'Where the user should be redirected upon completion'
+               ' of the OAuth2 flow.')
+    )
+    def getAutologinProvider(self, redirect):
+        autologinProvider = Setting().get(PluginSettings.AUTOLOGIN_PROVIDER)
+        enabledNames = Setting().get(PluginSettings.PROVIDERS_ENABLED)
+
+        if autologinProvider in enabledNames:
+            state = self._createStateToken(redirect)
+            provider = providers.idMap[autologinProvider]
+            return {
+                'id': provider.getProviderName(external=False),
+                'name': provider.getProviderName(external=True),
+                'url': provider.getUrl(state)
+            }
+        else:
+            return None
+
 
     @access.public
     @autoDescribeRoute(

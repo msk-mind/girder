@@ -11,6 +11,15 @@
       input.g-ignore-registration-policy(type="checkbox")
       | Ignore closed registration policy
 
+.g-autologin-oauth-provider-container
+  p.
+    Set OAuth provider to be logged into automatically on page load.
+  select#g-autologin-oauth-provider.form-control.input-sm
+    option(value='', selected="None")
+    each provider in providers
+      option(value=provider.id) #{provider.name}
+
+
 .g-oauth-provider-list-title Configure supported providers below
 p Only fill in the information for the OAuth2 providers you wish to enable.
 
