@@ -57,7 +57,7 @@ class SettingDefault:
         SettingKey.ADD_TO_GROUP_POLICY: 'never',
         SettingKey.API_KEYS: True,
         SettingKey.BANNER_COLOR: '#3F3B3B',
-        SettingKey.BRAND_NAME: 'Girder',
+        SettingKey.BRAND_NAME: 'CDSI Slide Viewer',
         SettingKey.COLLECTION_CREATE_POLICY: {
             'open': False,
             'groups': [],

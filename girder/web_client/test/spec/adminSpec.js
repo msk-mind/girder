@@ -74,7 +74,7 @@ describe('Test the settings page', function () {
     it('Settings should display their expected values', function () {
         expect($('#g-core-cookie-lifetime').val()).toBe('180');
         expect($('#g-core-smtp-host').val()).toBe('localhost');
-        expect($('#g-core-brand-name').val()).toBe('Girder');
+        expect($('#g-core-brand-name').val()).toBe('CDSI Slide Viewer');
         expect($('#g-core-registration-policy').val()).toBe('open');
         expect($('#g-core-upload-minimum-chunk-size').val()).toBe('');
         expect(JSON.parse($('#g-core-collection-create-policy').val())).toEqual({

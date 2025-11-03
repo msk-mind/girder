@@ -22,7 +22,7 @@ def _defaultMarkdown():
 
 @setting_utilities.default(PluginSettings.HEADER)
 def _defaultHeader():
-    return 'Girder'
+    return 'CDSI Slide Viewer'
 
 
 @setting_utilities.default(PluginSettings.SUBHEADER)
