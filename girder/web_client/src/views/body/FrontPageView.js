@@ -39,7 +39,7 @@ var FrontPageView = View.extend({
             version,
             brandName: this.brandName
         }));
-
+        console.log(brandName);
         return this;
     }
 });

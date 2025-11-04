@@ -15,6 +15,7 @@ import '@girder/core/stylesheets/layout/header.styl';
 var LayoutHeaderView = View.extend({
     events: {
         'click .g-app-title': function () {
+            console.log(settings.brandName);
             router.navigate('', { trigger: true });
         }
     },
@@ -22,6 +23,7 @@ var LayoutHeaderView = View.extend({
     initialize: function (settings) {
         this.brandName = settings.brandName || 'CDSI Slide Viewer';
         this.bannerColor = settings.bannerColor || '#3F3B3B';
+        console.log(this.brandName);
 
         this.userView = new LayoutHeaderUserView({
             parentView: this,
