@@ -360,6 +360,7 @@ girder
                 readdir
                 release
                 use_ns
+            logger
             main
             mountServer
             unmountServer
@@ -901,6 +902,7 @@ girder
                 cancelUpload
                 deleteFile
                 downloadFile
+                fileIndexFields
                 fileUpdated
                 finalizeUpload
                 importData
@@ -1104,6 +1106,7 @@ plugins
                     validTransitions
                     valid_transitions
                 REST_CREATE_JOB_TOKEN_SCOPE
+                REST_LIST_JOB_TOKEN_SCOPE
             job_rest
                 Job
                     allJobsTypesAndStatuses
