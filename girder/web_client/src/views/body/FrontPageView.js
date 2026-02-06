@@ -28,7 +28,7 @@ var FrontPageView = View.extend({
 
     initialize: function (settings) {
         cancelRestRequests('fetch');
-        this.brandName = settings.brandName || 'CDSI Slide Viewer';
+        this.brandName = settings.brandName || 'Pathology Viewer';
         this.render();
     },
 

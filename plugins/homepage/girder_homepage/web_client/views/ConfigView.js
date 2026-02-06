@@ -126,7 +126,7 @@ const ConfigView = View.extend({
         this.$el.html(ConfigViewTemplate({
             header: this.header || null,
             subHeader: this.subHeader || null,
-            defaultHeader: 'CDSI Slide Viewer',
+            defaultHeader: 'Pathology Viewer',
             defaultSubHeader: 'Data management platform'
         }));
         this.editor
