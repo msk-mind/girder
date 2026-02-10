@@ -20,7 +20,7 @@ var LayoutHeaderView = View.extend({
     },
 
     initialize: function (settings) {
-        this.brandName = settings.brandName || 'CDSI Slide Viewer';
+        this.brandName = settings.brandName || 'Pathology Viewer';
         this.bannerColor = settings.bannerColor || '#3F3B3B';
 
         this.userView = new LayoutHeaderUserView({
